@@ -1,0 +1,13 @@
+classes:
+        - altocumulus
+        - altostratus
+        - cirrus
+        - cirrostratus
+
+data_path:
+        - /home/maximilian/Bilder/cloudes/preprocessed/
+
+label_path: 
+        - ./label.pkl
+threshold:
+        - 3

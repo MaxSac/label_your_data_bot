@@ -11,3 +11,5 @@ label_path:
         - ./label.pkl
 threshold:
         - 3
+classified_label:
+        - /hier/steht/spaeter/mal/ein/sinnvoller/path

@@ -26,9 +26,6 @@ class label_handler():
                     columns=['filename', *self.classes, 'final_label'])
 
     def update_filename(self):
-        ''' Load filenames of pictures and check if they in the 
-        DataFrame. If they doesn't exist, they will be added.
-        '''
         dff = pd.DataFrame({'filename': os.listdir(self.data_path)})
         self.df = self.df.merge(dff, on='filename', how='outer',
                 validate='one_to_one')
@@ -36,11 +33,6 @@ class label_handler():
         self.last_update = pendulum.now()
 
     def get_pic_to_label(self, user):
-        ''' Load a random not labeld picture file.
-        Returns:
-            path: string 
-                string of filename of not labeld picture
-        '''
         if(pendulum.now().subtract(seconds=1) > self.last_update):
             self.update_filename()
         mask = self.df.sum(axis=1) < self.threshold
@@ -67,8 +59,13 @@ class label_handler():
         self.df_classified['status'] = 'not checked'
         print(self.df_classified)
     
-    def get_pic_to_check(self, user):
+    def get_pic_to_check(self, user, label=None):
         mask = self.df_classified['status'] == 'not checked'
+        print('Diese Funktion muss noch vielen weiteren Test unterzogen '
+        'werden. Die Funktion mit dem Label auswählen scheint noch nicht'
+        ' zu funktionieren.')
+        if label != None:
+            mask += self.df_classified.prediction == label
         if sum(mask) == 0:
             print('Everything checked, be happy that work is'
                     'done or add more data')
@@ -82,6 +79,8 @@ class label_handler():
             self.df.loc[pos,self.classes] = 0
         else:
             print('Label accepted', self.last_filename[user])
+        pos = self.df_classified.filename == self.last_filename[user]
+        self.df_classified[pos].status = 'checked'
 
 
 def main():
